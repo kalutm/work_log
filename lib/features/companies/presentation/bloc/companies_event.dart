@@ -27,6 +27,12 @@ class CompaniesWatchFailed extends CompaniesEvent {
   final String message;
 }
 
+class CompaniesDefaultChanged extends CompaniesEvent {
+  const CompaniesDefaultChanged(this.companyId);
+
+  final String? companyId;
+}
+
 class CompanyUpsertRequested extends CompaniesEvent {
   const CompanyUpsertRequested(this.company);
 

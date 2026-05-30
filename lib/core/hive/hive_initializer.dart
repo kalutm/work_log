@@ -23,6 +23,7 @@ class HiveInitializer {
 
   static Future<void> _openBoxes() async {
     await Hive.openBox<CompanyModel>(HiveBoxNames.companies);
+    await Hive.openBox<dynamic>(HiveBoxNames.settings);
     await Hive.openBox<WorkSessionModel>(HiveBoxNames.workSessions);
   }
 }
