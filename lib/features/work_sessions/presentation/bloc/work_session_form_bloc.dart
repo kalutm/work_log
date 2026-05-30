@@ -103,6 +103,7 @@ class WorkSessionFormBloc
     WorkSessionFormSubmitted event,
     Emitter<WorkSessionFormState> emit,
   ) async {
+    final isNewSession = state.sessionId == null;
     final validationError = _validate(state);
     if (validationError != null) {
       emit(
@@ -161,6 +162,14 @@ class WorkSessionFormBloc
           errorMessage: null,
         ),
       );
+      if (isNewSession) {
+        emit(
+          WorkSessionFormState(
+            status: WorkSessionFormStatus.editing,
+            companyId: state.companyId,
+          ),
+        );
+      }
     } catch (error) {
       emit(
         state.copyWith(
