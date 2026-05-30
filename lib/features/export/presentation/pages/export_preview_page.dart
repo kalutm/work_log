@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -113,12 +112,6 @@ class _ExportPreviewPageState extends State<ExportPreviewPage> {
             companies: data.companies,
             now: DateTime.now(),
           );
-          const previewLimit = 20;
-          final previewRows = csvRows.length > previewLimit
-              ? csvRows.sublist(0, previewLimit)
-              : csvRows;
-          final csvPreview = ExportFormatter.toCsv(previewRows);
-          final truncated = csvRows.length > previewLimit;
           final fullCsv = ExportFormatter.toCsv(csvRows);
 
           return ListView(
@@ -132,26 +125,6 @@ class _ExportPreviewPageState extends State<ExportPreviewPage> {
               _SummaryCard(
                 title: 'Sessions',
                 value: sessions.length.toString(),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'CSV preview',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SelectableText(
-                      csvPreview,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(fontFamily: 'monospace'),
-                    ),
-                  ),
-                ),
               ),
               const SizedBox(height: 8),
               Align(
@@ -168,37 +141,11 @@ class _ExportPreviewPageState extends State<ExportPreviewPage> {
                 child: OutlinedButton.icon(
                   onPressed: sessions.isEmpty
                       ? null
-                      : () => _copyCsv(context, fullCsv),
-                  icon: const Icon(Icons.copy),
-                  label: const Text('Copy full CSV'),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: OutlinedButton.icon(
-                  onPressed: sessions.isEmpty
-                      ? null
                       : () => _shareCsv(context, fullCsv, _selectedMonth),
                   icon: const Icon(Icons.share),
                   label: const Text('Share CSV'),
                 ),
               ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: OutlinedButton.icon(
-                  onPressed: sessions.isEmpty
-                      ? null
-                      : () => _saveCsv(context, fullCsv, _selectedMonth),
-                  icon: const Icon(Icons.save_alt),
-                  label: const Text('Save CSV file'),
-                ),
-              ),
-              if (truncated) ...[
-                const SizedBox(height: 4),
-                Text('Showing first $previewLimit rows.'),
-              ],
               const SizedBox(height: 16),
               if (sessions.isEmpty)
                 const Text('No sessions for this month.')
@@ -230,16 +177,6 @@ class _ExportData {
 
   final List<WorkSessionModel> sessions;
   final List<CompanyModel> companies;
-}
-
-Future<void> _copyCsv(BuildContext context, String csv) async {
-  await Clipboard.setData(ClipboardData(text: csv));
-  if (!context.mounted) {
-    return;
-  }
-  ScaffoldMessenger.of(
-    context,
-  ).showSnackBar(const SnackBar(content: Text('CSV copied to clipboard.')));
 }
 
 Future<void> _importCsv(BuildContext context) async {
@@ -400,29 +337,6 @@ Future<File> _writeCsvFile(String csv, DateTime selectedMonth) async {
   final file = File('${directory.path}/$filename');
   await file.writeAsString(csv);
   return file;
-}
-
-Future<void> _saveCsv(
-  BuildContext context,
-  String csv,
-  DateTime selectedMonth,
-) async {
-  try {
-    final file = await _writeCsvFile(csv, selectedMonth);
-    if (!context.mounted) {
-      return;
-    }
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Saved to ${file.path}')));
-  } catch (error) {
-    if (!context.mounted) {
-      return;
-    }
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Save failed: $error')));
-  }
 }
 
 Future<void> _shareCsv(
