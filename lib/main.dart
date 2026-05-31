@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:time_tracker/core/hive/hive_initializer.dart';
 import 'package:time_tracker/core/settings/app_settings.dart';
 import 'package:time_tracker/core/theme/app_theme.dart';
@@ -11,15 +10,20 @@ import 'package:time_tracker/features/work_sessions/data/datasources/work_sessio
 import 'package:time_tracker/features/work_sessions/data/repositories/work_session_repository_impl.dart';
 import 'package:time_tracker/features/work_sessions/domain/repositories/work_session_repository.dart';
 
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveInitializer.initialize();
+  
   final companyRepository = CompanyRepositoryImpl(
     CompanyLocalDataSourceHive.fromHive(),
   );
+  
   final workSessionRepository = WorkSessionRepositoryImpl(
     WorkSessionLocalDataSourceHive.fromHive(),
   );
+  
   final settings = AppSettingsHive.fromHive();
   final themeModeNotifier = ValueNotifier<ThemeMode>(
     await settings.getThemeMode(),
@@ -41,6 +45,8 @@ class MyApp extends StatelessWidget {
     required this.themeModeNotifier,
   });
 
+
+  
   final CompanyRepository companyRepository;
   final WorkSessionRepository workSessionRepository;
   final ValueNotifier<ThemeMode> themeModeNotifier;
