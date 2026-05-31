@@ -1,10 +1,13 @@
 # Work Log
 
-A local-first time tracking and work management app built with Flutter. Track live sessions, add manual entries, analyze time by day/month/company, and import or share data as CSV.
+A local-first time tracking and work logging and management Android app built with Flutter. Track live sessions, add manual entries, analyze time by day/month/company, and import or share data as CSV.
+
+# Android Apk
+You can get the android apk using this link: https://drive.google.com/file/d/19G4XWXPM9ZozLuiCGsoy4Y83NB09e2DE/view?usp=drive_link
 
 ## Overview
 
-Time Tracker is designed for fast, offline-first logging of work sessions. It uses Hive for local storage and BLoC for state management. The UI includes a tracker, manual entry flow, sessions list, calendar view, and dashboard insights.
+Work Log is designed for fast, offline-first logging of work sessions. It uses Hive for local storage and BLoC for state management. The UI includes a tracker, manual entry flow, sessions list, calendar view, and dashboard insights.
 
 ## Features
 
