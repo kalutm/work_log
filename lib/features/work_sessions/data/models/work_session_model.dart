@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-
 import 'package:time_tracker/core/hive/hive_type_ids.dart';
+
 
 class WorkSessionModel {
   const WorkSessionModel({
@@ -12,6 +12,7 @@ class WorkSessionModel {
     this.notes,
   });
 
+  
   final String id;
   final String companyId;
   final DateTime startTime;
@@ -19,6 +20,8 @@ class WorkSessionModel {
   final int durationInSeconds;
   final String? notes;
 
+
+  
   WorkSessionModel copyWith({
     String? id,
     String? companyId,

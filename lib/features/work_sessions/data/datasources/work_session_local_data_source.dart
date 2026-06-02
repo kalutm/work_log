@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
-
 import 'package:time_tracker/core/hive/hive_box_names.dart';
 import 'package:time_tracker/features/work_sessions/data/models/work_session_model.dart';
+
 
 abstract class WorkSessionLocalDataSource {
   Future<List<WorkSessionModel>> getAllSessions();
@@ -13,6 +13,8 @@ abstract class WorkSessionLocalDataSource {
   Future<List<WorkSessionModel>> getSessionsForCompany(String companyId);
   Future<List<WorkSessionModel>> getSessionsForMonth(DateTime month);
 }
+
+
 
 class WorkSessionLocalDataSourceHive implements WorkSessionLocalDataSource {
   WorkSessionLocalDataSourceHive(this._box);
@@ -37,6 +39,8 @@ class WorkSessionLocalDataSourceHive implements WorkSessionLocalDataSource {
       yield _box.values.toList(growable: false);
     }
   }
+
+  
 
   @override
   Future<WorkSessionModel?> getSessionById(String id) async => _box.get(id);
